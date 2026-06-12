@@ -1,3 +1,3 @@
-<!-- Single source of truth for agent instructions: ~/.codex/AGENTS.md
+<!-- Single source of truth for agent instructions: ~/.agents/AGENTS.md
      (shared with Codex and any AGENTS.md-aware tool). Edit that file, not this one. -->
-@~/.codex/AGENTS.md
+@~/.agents/AGENTS.md

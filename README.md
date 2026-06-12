@@ -10,18 +10,25 @@ directory; the real files live here, under version control.
 
 ```
 dotfiles/
+├── agents/  → ~/.agents/{AGENTS.md, skills/{caveman,grill-me}}   # ← single source of truth
 ├── bash/    → ~/.bashrc, ~/.profile, ~/.bash_logout
 ├── git/     → ~/.gitconfig
-├── claude/  → ~/.claude/{settings.json, statusline-command.sh, CLAUDE.md, skills/}
-└── codex/   → ~/.codex/{config.toml, AGENTS.md, skills/}
+├── claude/  → ~/.claude/{settings.json, statusline-command.sh, CLAUDE.md, skills→.agents}
+└── codex/   → ~/.codex/{config.toml, AGENTS.md→.agents, skills→.agents}
 ```
 
-`~/.codex/AGENTS.md` is the **single source of truth** for global agent
-instructions (it activates the `caveman` skill at `lite` intensity each
-session). Codex loads `AGENTS.md` natively; `~/.claude/CLAUDE.md` is just
-`@~/.codex/AGENTS.md` (a Claude Code import), so both tools read the same
-content — **edit `AGENTS.md`, not `CLAUDE.md`**. The `caveman` and `grill-me`
-skills live under both `skills/` dirs. (Promoted from a per-project setup.)
+**`~/.agents/` is the single source of truth** for shared agent instructions and
+skills — a neutral location owned by no single tool. Each tool points into it:
+
+- **Prompt:** `~/.agents/AGENTS.md` holds the instructions (activates the
+  `caveman` skill at `lite` intensity each session). `~/.codex/AGENTS.md` is a
+  symlink to it (Codex reads `AGENTS.md` natively); `~/.claude/CLAUDE.md` is just
+  `@~/.agents/AGENTS.md` (a Claude Code import).
+- **Skills:** `~/.agents/skills/{caveman,grill-me}` are the real skills; both
+  `~/.claude/skills/*` and `~/.codex/skills/*` symlink to them.
+
+**Edit the files under `~/.agents/`** (repo: `agents/.agents/`) and every tool
+stays in sync. (Promoted from a per-project setup.)
 
 ## Setup on a new machine
 
@@ -29,7 +36,7 @@ skills live under both `skills/` dirs. (Promoted from a per-project setup.)
 sudo apt install -y stow                                      # or your package manager
 git clone https://github.com/MinhxNguyen7/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-stow bash git claude codex                                    # symlink everything into ~
+stow agents bash git claude codex                             # symlink everything into ~
 ```
 
 > If a target file already exists (e.g. a stock `~/.bashrc`), stow will refuse
