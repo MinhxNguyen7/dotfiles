@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "model": "opus[1m]",
+  "enabledPlugins": {
+    "github@claude-plugins-official": true,
+    "atlassian@claude-plugins-official": true
+  },
+  "theme": "dark",
+  "remoteControlAtStartup": true,
+  "inputNeededNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
+  "agentPushNotifEnabled": true,
+  "effortLevel": "xhigh",
+  "statusLine": {
+    "type": "command",
+    "command": "bash /home/minh/.claude/statusline-command.sh"
+  }
+}

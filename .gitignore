@@ -1,0 +1,47 @@
+# =====================================================================
+#  dotfiles/.gitignore
+#  Defensive: even if a whole directory is ever stowed/adopted by
+#  mistake, these patterns keep secrets and machine state out of git.
+# =====================================================================
+
+# --- Secrets / credentials — NEVER commit ------------------------------
+**/.credentials.json
+**/auth.json
+**/*.pem
+**/*.key
+**/id_rsa*
+**/id_ed25519*
+**/.netrc
+**/hosts.yml
+**/secrets*
+**/*token*
+
+# --- Per-machine local overrides ---------------------------------------
+**/settings.local.json
+
+# --- History / session / state -----------------------------------------
+**/history.jsonl
+**/session_index.jsonl
+**/*.sqlite
+**/*.sqlite-shm
+**/*.sqlite-wal
+**/sessions/
+**/shell-snapshots/
+**/shell_snapshots/
+**/projects/
+**/usage-data/
+**/statsig/
+**/memories/
+**/.last-*
+**/installation_id
+
+# --- Caches ------------------------------------------------------------
+**/cache/
+**/*cache*.json
+**/.tmp/
+**/tmp/
+
+# --- OS / editor junk --------------------------------------------------
+.DS_Store
+*.swp
+*~
