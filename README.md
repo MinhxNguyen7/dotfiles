@@ -12,9 +12,14 @@ directory; the real files live here, under version control.
 dotfiles/
 ├── bash/    → ~/.bashrc, ~/.profile, ~/.bash_logout
 ├── git/     → ~/.gitconfig
-├── claude/  → ~/.claude/{settings.json, statusline-command.sh}
-└── codex/   → ~/.codex/config.toml
+├── claude/  → ~/.claude/{settings.json, statusline-command.sh, CLAUDE.md, skills/}
+└── codex/   → ~/.codex/{config.toml, AGENTS.md, skills/}
 ```
+
+`~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md` are global instruction files
+(auto-loaded by Claude Code / Codex) that activate the `caveman` skill at
+`lite` intensity each session. The `caveman` and `grill-me` skills live under
+both `skills/` dirs. These were promoted from a per-project setup.
 
 ## Setup on a new machine
 
