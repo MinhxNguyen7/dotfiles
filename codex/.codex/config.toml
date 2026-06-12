@@ -11,11 +11,6 @@ trust_level = "trusted"
 [tui.model_availability_nux]
 "gpt-5.5" = 3
 
-[hooks.state]
-
-[hooks.state."/home/minh/code/robotics_codex/.codex/config.toml:session_start:0:0"]
-trusted_hash = "sha256:a42c8424560644fd922f83c4ab9bc8687e477fd079e91b2ff1bc79450bdb6af5"
-
 [mcp_servers.github]
 url = "https://api.githubcopilot.com/mcp/"
 bearer_token_env_var = "GITHUB_PAT_TOKEN"
