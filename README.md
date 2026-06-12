@@ -16,10 +16,12 @@ dotfiles/
 └── codex/   → ~/.codex/{config.toml, AGENTS.md, skills/}
 ```
 
-`~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md` are global instruction files
-(auto-loaded by Claude Code / Codex) that activate the `caveman` skill at
-`lite` intensity each session. The `caveman` and `grill-me` skills live under
-both `skills/` dirs. These were promoted from a per-project setup.
+`~/.codex/AGENTS.md` is the **single source of truth** for global agent
+instructions (it activates the `caveman` skill at `lite` intensity each
+session). Codex loads `AGENTS.md` natively; `~/.claude/CLAUDE.md` is just
+`@~/.codex/AGENTS.md` (a Claude Code import), so both tools read the same
+content — **edit `AGENTS.md`, not `CLAUDE.md`**. The `caveman` and `grill-me`
+skills live under both `skills/` dirs. (Promoted from a per-project setup.)
 
 ## Setup on a new machine
 
