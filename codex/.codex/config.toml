@@ -13,10 +13,6 @@ trust_level = "trusted"
 
 [hooks.state]
 
-[hooks.state."/home/minh/code/robotics/.codex/config.toml:session_start:0:0"]
-trusted_hash = "sha256:a42c8424560644fd922f83c4ab9bc8687e477fd079e91b2ff1bc79450bdb6af5"
-enabled = true
-
 [hooks.state."/home/minh/code/robotics_codex/.codex/config.toml:session_start:0:0"]
 trusted_hash = "sha256:a42c8424560644fd922f83c4ab9bc8687e477fd079e91b2ff1bc79450bdb6af5"
 
