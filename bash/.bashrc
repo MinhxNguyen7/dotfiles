@@ -120,22 +120,40 @@ if ! shopt -oq posix; then
   fi
 fi
 
+export PATH="$HOME/.local/bin:$PATH"
+
+# --- conda / micromamba init (portable: init whichever is installed) ---
+# Single .bashrc for conda machines and micromamba machines alike. If
+# `conda init` / `micromamba shell init` ever rewrites a block, re-apply the
+# $HOME form — they may hardcode an absolute /home/<user> path.
+
+if [ -x "$HOME/miniconda3/bin/conda" ]; then
 # >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$("$HOME/miniconda3/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
+elif [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+    . "$HOME/miniconda3/etc/profile.d/conda.sh"
 else
-    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="$HOME/miniconda3/bin:$PATH"
-    fi
+    export PATH="$HOME/miniconda3/bin:$PATH"
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+fi
 
-export PATH="$HOME/.local/bin:$PATH"
+if [ -x "$HOME/.local/bin/micromamba" ]; then
+# >>> mamba initialize >>>
+export MAMBA_EXE="$HOME/.local/bin/micromamba";
+export MAMBA_ROOT_PREFIX="$HOME/micromamba";
+__mamba_setup="$("$MAMBA_EXE" shell hook --shell bash --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__mamba_setup"
+else
+    alias micromamba="$MAMBA_EXE"
+fi
+unset __mamba_setup
+alias mamba=micromamba
+fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
