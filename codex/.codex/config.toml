@@ -2,14 +2,6 @@ model = "gpt-5.5"
 model_reasoning_effort = "high"
 personality = "pragmatic"
 service_tier = "default"
-[projects."/home/minh/code/robotics"]
-trust_level = "trusted"
-
-[projects."/home/minh/code/robotics_codex"]
-trust_level = "trusted"
-
-[tui.model_availability_nux]
-"gpt-5.5" = 3
 
 [mcp_servers.github]
 url = "https://api.githubcopilot.com/mcp/"

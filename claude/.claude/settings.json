@@ -15,6 +15,6 @@
   "effortLevel": "xhigh",
   "statusLine": {
     "type": "command",
-    "command": "bash /home/minh/.claude/statusline-command.sh"
+    "command": "bash $HOME/.claude/statusline-command.sh"
   }
 }
