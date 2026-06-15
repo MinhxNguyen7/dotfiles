@@ -16,3 +16,8 @@ the user explicitly asks otherwise.
 - Prefer the most modern syntax available. In Python: `X | None` over
   `Optional[X]`, builtin generics (`list`, `dict`, `tuple`) over
   `typing.List`/`Dict`/`Tuple`, etc.
+
+## Subagents
+
+- Spawn subagents one model tier below the parent agent (for Claude: Opus parent
+  → Sonnet subagents; Sonnet → Haiku). Don't go below the smallest available tier.
