@@ -19,5 +19,9 @@ the user explicitly asks otherwise.
 
 ## Subagents
 
+- Delegate to subagents whenever a task can be scoped to one — parallelizable
+  work, broad searches/exploration, and independent subtasks. It parallelizes
+  the work and keeps the parent's context focused; launch independent subagents
+  concurrently.
 - Spawn subagents one model tier below the parent agent (for Claude: Opus parent
   → Sonnet subagents; Sonnet → Haiku). Don't go below the smallest available tier.
