@@ -5,7 +5,8 @@
   "model": "opus[1m]",
   "enabledPlugins": {
     "github@claude-plugins-official": true,
-    "atlassian@claude-plugins-official": true
+    "atlassian@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true
   },
   "theme": "dark",
   "remoteControlAtStartup": true,
