@@ -70,3 +70,20 @@ Secrets and machine state are **never** tracked (enforced by `.gitignore`):
 auth credentials (`~/.claude/.credentials.json`, `~/.codex/auth.json`),
 shell/session history, session logs, `*.sqlite` databases, caches, and
 per-machine `settings.local.json`.
+
+## Tool-managed files that drift
+
+Some tools rewrite their own config/state into files this repo tracks, so
+expect occasional spurious `git` changes. Strip the machine-specific bits back
+out before committing — only portable config belongs here.
+
+- **`codex/.codex/config.toml`** — Codex writes runtime *state* back into this
+  file: per-project `[projects."/abs/path"]` trust entries, the
+  `[tui.model_availability_nux]` counter, and `[hooks.state]`. Because the file
+  is symlinked into the repo, those reappear after Codex sessions. Keep only the
+  portable keys (`model`, `model_reasoning_effort`, `personality`,
+  `service_tier`, `[mcp_servers.*]`); drop the rest.
+- **`bash/.bashrc`** — the `# >>> conda initialize >>>` block is owned by
+  `conda init` and may be regenerated with an absolute install path
+  (`/home/<user>/miniconda3`). Re-apply the `$HOME/miniconda3` form if that
+  happens, so it stays portable.
