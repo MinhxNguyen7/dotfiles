@@ -30,8 +30,9 @@ if git -C "$cwd" rev-parse --git-dir >/dev/null 2>&1; then
 fi
 
 # --- Assemble status line ---
-# Format:
-#   [model | ctx: XX% | tokens: NNNN]  user@host:cwd (branch)
+# Format (two lines):
+#   line 1: cwd (branch)
+#   line 2: model | ctx: XX% | tokens: NNNN
 
 ctx_part=""
 if [ -n "$used_pct" ]; then
@@ -42,11 +43,15 @@ fi
 
 tokens_part=$(printf "tokens: %d" "$total_tokens")
 
-printf '\033[01;36m[%s | %s | %s]\033[00m  \033[01;32m%s@%s\033[00m:\033[01;34m%s\033[01;33m%s\033[00m' \
-    "$model" \
-    "$ctx_part" \
-    "$tokens_part" \
+# Line 1: user@host:path (branch) -- PS1 style
+printf '\033[01;32m%s@%s\033[00m:\033[01;34m%s\033[01;33m%s\033[00m\n' \
     "$user" \
     "$host" \
     "$short_cwd" \
     "$git_branch"
+
+# Line 2: model | context (no brackets)
+printf '\033[01;36m%s | %s | %s\033[00m' \
+    "$model" \
+    "$ctx_part" \
+    "$tokens_part"
