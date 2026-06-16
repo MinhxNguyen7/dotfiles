@@ -3,25 +3,34 @@
 ## Response style
 
 - At the start of every session, use the `caveman` skill with intensity `lite` and apply it to all subsequent responses in that session.
-  - Caveman talk only applies to chat, not code.
+  - Caveman talk applies to chat, not code/commits/PRs.
   - Continue speaking in caveman-lite style for the remainder of the session unless the user explicitly asks otherwise.
 
 ## Coding
 
+### Program Flow
+
 - Do not work around problems by editing `PYTHONPATH` or other environment
   variables; fix the underlying packaging/import structure instead.
-- Add type annotations wherever possible.
-  - Be abstract: Sequence[...] instead of List[...] when possible.
-  - Be precise. Don't use Any if it's avoidable.
-- Prefer the most modern syntax available. In Python: `X | None` over
-  `Optional[X]`, builtin generics (`list`, `dict`, `tuple`) over
-  `typing.List`/`Dict`/`Tuple`, etc.
-- Write clearly-readable self-documenting code instead of relying on comments.
+- Avoid nested functions and imports, except when specifically idiomatic (closures/decorators).
+
+### Style
+
+- Maximize code readability. Be verbose with names and don't abbreviate.
+- Write self-documenting code instead of relying on comments.
   - Comments explain why. Code explains what and how (if possible).
-  - Still comment and docstring if necessary.
-- Comment short and terse.
+  - Docstrings can provide overview for high-level functions.
+- Comment short and terse. Drop articles (a/an/the). Use exact technical terms.
   - Bad: "This shim is necessary to maintain backwards compatibility because PR #62 renames the module from X to Y"
   - Good: "Backwards-compatibility. Module renamed in #62 (X → Y)"
+
+### Python
+
+- Add type annotations wherever possible.
+  - Be abstract: `Sequence[...]` instead of `List[...]` when possible.
+  - Be precise: Only use `Any`/`object` when *everything* is allowed.
+- Prefer the most modern syntax available.
+  - `X | None` over `Optional[X]`, builtin generics (`list`, `dict`, `tuple`) over `typing.List`/`Dict`/`Tuple`, etc.
 
 ## Commits
 
@@ -37,9 +46,7 @@
 
 ## Subagents
 
-- Delegate to subagents whenever a task can be scoped to one — parallelizable
-  work, broad searches/exploration, and independent subtasks. It parallelizes
-  the work and keeps the parent's context focused; launch independent subagents
-  concurrently.
-- Spawn subagents one model tier below the parent agent (for Claude: Opus parent
-  → Sonnet subagents; Sonnet → Haiku). Don't go below the smallest available tier.
+- Eagerly delegate to concurrent subagents for speed and to keep parent context focused.
+  - Parallelizable work, broad searches/exploration, and independent subtasks.
+  - Trivial edits/lookups and tight back-and-forth excepted
+- Prefer cheaper model for scoped subagent work.
