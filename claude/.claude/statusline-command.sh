@@ -18,6 +18,8 @@ ctx_size=$(echo "$input" | jq -r '.context_window.context_window_size // 200000'
 cost_usd=$(echo "$input" | jq -r '.cost.total_cost_usd // empty')
 five_h=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
 seven_d=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+five_h_reset=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
+seven_d_reset=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 
 # --- PS1-derived prompt (user@host:cwd (git-branch)) ---
 user=$(whoami)
@@ -63,15 +65,38 @@ make_bar() {
     printf '%s' "$bar"
 }
 
+# Burn-rate multiplier: %used / %time-elapsed in the window.
+# >1x means spending faster than the sustainable average; 1x is on pace.
+# Returns e.g. "1.8x", or empty if it can't be computed.
+burn_mult() {
+    local used=$1 resets=$2 window=$3 now
+    [ -z "$resets" ] && return 0
+    now=$(date +%s)
+    awk -v used="$used" -v resets="$resets" -v window="$window" -v now="$now" 'BEGIN {
+        if (resets > 1e11) resets = resets / 1000   # tolerate ms epoch
+        elapsed = window - (resets - now)
+        if (elapsed <= 0) exit                      # window not started / clock skew
+        elapsed_pct = elapsed / window * 100
+        if (elapsed_pct <= 0) exit
+        printf "%.1fx", used / elapsed_pct
+    }'
+}
+
 # Usage line parts: rate-limit bars first, cost at end (skip absent)
 usage_parts=()
 if [ -n "$five_h" ]; then
     fi_int=$(printf '%.0f' "$five_h")
-    usage_parts+=("$(printf '5h: %s %d%%' "$(make_bar "$fi_int")" "$fi_int")")
+    part=$(printf '5h: %s %d%%' "$(make_bar "$fi_int")" "$fi_int")
+    mult=$(burn_mult "$five_h" "$five_h_reset" 18000)
+    [ -n "$mult" ] && part="$part ($mult)"
+    usage_parts+=("$part")
 fi
 if [ -n "$seven_d" ]; then
     sd_int=$(printf '%.0f' "$seven_d")
-    usage_parts+=("$(printf '7d: %s %d%%' "$(make_bar "$sd_int")" "$sd_int")")
+    part=$(printf '7d: %s %d%%' "$(make_bar "$sd_int")" "$sd_int")
+    mult=$(burn_mult "$seven_d" "$seven_d_reset" 604800)
+    [ -n "$mult" ] && part="$part ($mult)"
+    usage_parts+=("$part")
 fi
 [ -n "$cost_usd" ] && usage_parts+=("$(printf '$%.2f' "$cost_usd")")
 
