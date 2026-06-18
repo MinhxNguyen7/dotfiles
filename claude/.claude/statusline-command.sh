@@ -59,7 +59,7 @@ avail_k=$(( ctx_size / 1000 ))
 # Fill bar for a percentage: ━ filled, ─ empty (width 10)
 # Horizontal line glyphs stay within normal text height (no taller line).
 make_bar() {
-    local pct_int=$1 width=10 i filled empty bar=""
+    local pct_int=$1 width=20 i filled empty bar=""
     filled=$(( pct_int * width / 100 ))
     [ "$filled" -lt 0 ] && filled=0
     [ "$filled" -gt "$width" ] && filled=$width
@@ -121,7 +121,7 @@ printf '\033[01;32m%s@%s\033[00m:\033[01;34m%s\033[01;33m%s\033[00m\n' \
 
 # Line 2: model (effort) + context bar (cyan), white dividers
 ctx_bar=$(make_bar "$ctx_pct_int")
-line2="${C_CYAN}${model_display}${C_RESET}${DIV}${C_CYAN}Context: ${used_k}k/${avail_k}k ${ctx_bar}${C_RESET}"
+line2="${C_CYAN}${model_display}${C_RESET}${DIV}${C_CYAN}Context: ${ctx_bar} ${used_k}k/${avail_k}k${C_RESET}"
 
 # Line 3: usage parts (magenta), white dividers between
 line3=""
