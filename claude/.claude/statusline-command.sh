@@ -6,6 +6,10 @@ input=$(cat)
 
 # --- Model info ---
 model=$(echo "$input" | jq -r '.model.display_name // .model.id // "unknown"')
+# effort.level absent when model lacks effort param
+effort=$(echo "$input" | jq -r '.effort.level // empty')
+model_display="$model"
+[ -n "$effort" ] && model_display="$model ($effort)"
 
 # --- Context window ---
 used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
@@ -39,9 +43,9 @@ fi
 
 # --- Assemble status line ---
 # Format (three lines):
-#   line 1: cwd (branch)
-#   line 2: model | ctx: XX% | tokens: NNNN
-#   line 3: cost: $X.XX | 5h: NN% | 7d: NN%
+#   line 1: user@host:cwd (branch)
+#   line 2: model (effort) | Context: <used>k/<avail>k <bar>
+#   line 3: 5h: <bar> NN% | 7d: <bar> NN% | $cost
 
 # Context: "Context: <used>k/<avail>k <bar>" (used = input tokens in context)
 if [ -n "$used_pct" ]; then
@@ -115,10 +119,16 @@ printf '\033[01;32m%s@%s\033[00m:\033[01;34m%s\033[01;33m%s\033[00m\n' \
     "$short_cwd" \
     "$git_branch"
 
-# Line 2: model + context bar (cyan), usage (magenta), white dividers
+# Line 2: model (effort) + context bar (cyan), white dividers
 ctx_bar=$(make_bar "$ctx_pct_int")
-line2="${C_CYAN}${model}${C_RESET}${DIV}${C_CYAN}Context: ${used_k}k/${avail_k}k ${ctx_bar}${C_RESET}"
+line2="${C_CYAN}${model_display}${C_RESET}${DIV}${C_CYAN}Context: ${used_k}k/${avail_k}k ${ctx_bar}${C_RESET}"
+
+# Line 3: usage parts (magenta), white dividers between
+line3=""
 for p in "${usage_parts[@]}"; do
-    line2+="${DIV}${C_MAGENTA}${p}${C_RESET}"
+    [ -n "$line3" ] && line3+="$DIV"
+    line3+="${C_MAGENTA}${p}${C_RESET}"
 done
+
 printf '%s' "$line2"
+[ -n "$line3" ] && printf '\n%s' "$line3"
