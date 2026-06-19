@@ -32,6 +32,18 @@
 - Prefer the most modern syntax available.
   - `X | None` over `Optional[X]`, builtin generics (`list`, `dict`, `tuple`) over `typing.List`/`Dict`/`Tuple`, etc.
 
+### Testing
+
+- Test desired behavior, not implementation details. A test should fail when the
+  behavior breaks, not when refactoring changes the code.
+  - Avoid change-detection tests that merely assert the current implementation
+    (e.g. snapshotting internal state or mirroring the code under test).
+- Be strategic to limit execution time and maintenance cost.
+  - Cover the meaningful cases (core paths, edge cases, regressions); skip
+    redundant or low-value tests.
+  - Prefer fast, focused tests; reserve slow/integration tests for behavior unit
+    tests cannot reach.
+
 ## Commits
 
 - Follow the [Conventional Commits](https://www.conventionalcommits.org/)
