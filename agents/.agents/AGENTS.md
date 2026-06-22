@@ -15,6 +15,9 @@
 - Avoid nested functions and imports, except when specifically idiomatic (closures/decorators).
 - Do not hardcode absolute/machine-specific paths in code for portability.
   Derive paths relative to the file, project root, or a configurable base;
+- Remove unused code instead of leaving it dead. Delete code that a change makes
+  obsolete (unreferenced functions, unreachable branches, commented-out blocks)
+  rather than keeping it around. Version control preserves history.
 
 ### Style
 
