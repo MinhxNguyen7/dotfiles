@@ -13,6 +13,8 @@
 - Do not work around problems by editing `PYTHONPATH` or other environment
   variables; fix the underlying packaging/import structure instead.
 - Avoid nested functions and imports, except when specifically idiomatic (closures/decorators).
+- Do not hardcode absolute/machine-specific paths in code for portability.
+  Derive paths relative to the file, project root, or a configurable base;
 
 ### Style
 
