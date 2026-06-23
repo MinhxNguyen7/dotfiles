@@ -65,5 +65,6 @@
 
 - Eagerly delegate to concurrent subagents for speed and to keep parent context focused.
   - Parallelizable work, broad searches/exploration, and independent subtasks.
-  - Trivial edits/lookups and tight back-and-forth excepted
+  - While diagnosing local issues, dispatch a subagent to research online (docs, forums, issue trackers, papers) in parallel and keep diagnosing locally while it works.
+  - Trivial edits/lookups and tight back-and-forth excepted.
 - Prefer cheaper model for scoped subagent work.
