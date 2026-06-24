@@ -86,13 +86,35 @@ burn_mult() {
     }'
 }
 
+# Minutes until the limit hits 100% at current burn rate.
+# rate = %used / elapsed; eta = (100 - %used) / rate. Empty if no burn yet
+# or window not started. Reports time-to-exhaust, ignoring the window reset.
+burn_eta_min() {
+    local used=$1 resets=$2 window=$3 now
+    [ -z "$resets" ] && return 0
+    now=$(date +%s)
+    awk -v used="$used" -v resets="$resets" -v window="$window" -v now="$now" 'BEGIN {
+        if (resets > 1e11) resets = resets / 1000   # tolerate ms epoch
+        elapsed = window - (resets - now)
+        if (elapsed <= 0) exit                      # window not started / clock skew
+        if (used <= 0) exit                         # no burn yet → no finite ETA
+        rate = used / elapsed                       # %/sec
+        eta_sec = (100 - used) / rate
+        if (eta_sec < 0) eta_sec = 0
+        printf "%.0fm", eta_sec / 60
+    }'
+}
+
 # Usage line parts: rate-limit bars first, cost at end (skip absent)
 usage_parts=()
 if [ -n "$five_h" ]; then
     fi_int=$(printf '%.0f' "$five_h")
     part=$(printf '5h: %s %d%%' "$(make_bar "$fi_int")" "$fi_int")
     mult=$(burn_mult "$five_h" "$five_h_reset" 18000)
-    [ -n "$mult" ] && part="$part ($mult)"
+    eta=$(burn_eta_min "$five_h" "$five_h_reset" 18000)
+    extra="$mult"
+    [ -n "$eta" ] && { [ -n "$extra" ] && extra="$extra, ~${eta} left" || extra="~${eta} left"; }
+    [ -n "$extra" ] && part="$part ($extra)"
     usage_parts+=("$part")
 fi
 if [ -n "$seven_d" ]; then
