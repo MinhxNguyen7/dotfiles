@@ -77,4 +77,4 @@
   - Parallelizable work, broad searches/exploration, and independent subtasks.
   - While diagnosing local issues, dispatch a subagent to research online (docs, forums, issue trackers, papers) in parallel and keep diagnosing locally while it works.
   - Trivial edits/lookups and tight back-and-forth excepted.
-- Prefer cheaper model for scoped subagent work.
+- For scoped subagent work, use a model one tier cheaper than the main session model (e.g. Sonnet when the session runs Opus, Haiku when it runs Sonnet).
