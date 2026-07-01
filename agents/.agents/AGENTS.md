@@ -38,6 +38,12 @@
 - Comment short and terse. Drop articles (a/an/the). Use exact technical terms.
   - Bad: "This shim is necessary to maintain backwards compatibility because PR #62 renames the module from X to Y"
   - Good: "Backwards-compatibility. Module renamed in #62 (X → Y)"
+- Documentation and comments are stateless. Describe what the code is now;
+  justify it on its own terms, not by contrast with the past.
+  - Do not reference history, prior versions, or how something changed (e.g.
+    "now lower than before", "used to be X", "after the refactor").
+  - Bad: "Timeout reduced to 5s to avoid the old hangs"
+  - Good: "5s timeout bounds worst-case request latency"
 
 ### Python
 
