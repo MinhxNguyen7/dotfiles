@@ -3,19 +3,24 @@
     "defaultMode": "auto"
   },
   "model": "opus[1m]",
+  "env": {
+    "ENABLE_PROMPT_CACHING_1H": "1"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash $HOME/.claude/statusline-command.sh"
+  },
   "enabledPlugins": {
     "github@claude-plugins-official": true,
     "atlassian@claude-plugins-official": true,
     "pyright-lsp@claude-plugins-official": true
   },
+  "effortLevel": "xhigh",
+  "tui": "fullscreen",
   "theme": "dark",
   "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": true,
-  "skipAutoPermissionPrompt": true,
   "agentPushNotifEnabled": true,
-  "effortLevel": "xhigh",
-  "statusLine": {
-    "type": "command",
-    "command": "bash $HOME/.claude/statusline-command.sh"
-  }
+  "skipAutoPermissionPrompt": true,
+  "skipWorkflowUsageWarning": true
 }
