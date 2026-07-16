@@ -1,11 +1,14 @@
 {
-  "permissions": {
-    "defaultMode": "auto"
-  },
-  "model": "opus[1m]",
   "env": {
     "ENABLE_PROMPT_CACHING_1H": "1"
   },
+  "permissions": {
+    "defaultMode": "auto",
+    "ask": [
+      "Workflow"
+    ]
+  },
+  "model": "fable",
   "statusLine": {
     "type": "command",
     "command": "bash $HOME/.claude/statusline-command.sh"
@@ -17,10 +20,10 @@
   },
   "effortLevel": "xhigh",
   "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
   "theme": "dark",
   "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true,
-  "skipWorkflowUsageWarning": true
+  "skipAutoPermissionPrompt": true
 }
