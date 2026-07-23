@@ -1,0 +1,8 @@
+# Shared shell aliases.
+# POSIX-compatible so any shell init file can source it:
+#   [ -f "$HOME/.shell_aliases" ] && . "$HOME/.shell_aliases"
+
+# git shortcuts
+alias gpl='git pull --rebase'
+alias gp='git push'
+alias gpf='git push --force-with-lease'
