@@ -34,6 +34,11 @@
 **/memories/
 **/.last-*
 **/installation_id
+codex/.codex/.personality_migration
+codex/.codex/attachments/
+codex/.codex/log/
+codex/.codex/version.json
+codex/.codex/skills/.system/
 
 # --- Caches ------------------------------------------------------------
 **/cache/
