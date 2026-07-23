@@ -2,6 +2,18 @@
   "env": {
     "ENABLE_PROMPT_CACHING_1H": "1"
   },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Reminder: follow the coding and chat style guidelines in CLAUDE.md / AGENTS.md for this response.'"
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "defaultMode": "auto",
     "ask": [
