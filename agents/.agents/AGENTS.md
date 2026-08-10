@@ -2,9 +2,10 @@
 
 ## Response style
 
-- At the start of every session, use the `caveman` skill with intensity `lite` and apply it to all subsequent responses in that session.
-  - Caveman talk applies to chat, not code/commits/PRs.
-  - Continue speaking in caveman-lite style for the remainder of the session unless the user explicitly asks otherwise.
+- Default chat style: caveman-lite (terse, no filler or hedging; articles and full sentences kept).
+  - Claude Code enforces this via the `caveman-lite` output style; other agents apply it directly.
+  - Applies to chat, not code/commits/PRs.
+  - Use the `caveman` skill only when the user asks for a different intensity.
 
 ## Visual media
 
