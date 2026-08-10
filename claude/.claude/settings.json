@@ -6,13 +6,15 @@
     "defaultMode": "auto"
   },
   "model": "opus",
+  "outputStyle": "caveman-lite",
   "hooks": {
     "UserPromptSubmit": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'Reminder: follow the coding and chat style guidelines in CLAUDE.md / AGENTS.md for this response.'"
+            "command": "$HOME/.claude/hooks/style-reminder.sh",
+            "timeout": 5
           }
         ]
       }
