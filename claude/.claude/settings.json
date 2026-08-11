@@ -5,7 +5,7 @@
   "permissions": {
     "defaultMode": "auto"
   },
-  "model": "opus",
+  "model": "fable",
   "outputStyle": "caveman-lite",
   "hooks": {
     "UserPromptSubmit": [
@@ -30,6 +30,7 @@
     "pyright-lsp@claude-plugins-official": true
   },
   "effortLevel": "xhigh",
+  "promptSuggestionEnabled": false,
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
