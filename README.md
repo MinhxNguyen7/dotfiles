@@ -20,8 +20,9 @@ dotfiles/
 **`~/.agents/` is the single source of truth** for shared agent instructions and
 skills — a neutral location owned by no single tool. Each tool points into it:
 
-- **Prompt:** `~/.agents/AGENTS.md` holds the instructions (activates the
-  `caveman` skill at `lite` intensity each session). `~/.codex/AGENTS.md` is a
+- **Prompt:** `~/.agents/AGENTS.md` holds the instructions (concise chat style;
+  Claude Code gets it from the built-in `Concise` output style, set in
+  `claude/.claude/settings.json`). `~/.codex/AGENTS.md` is a
   symlink to it (Codex reads `AGENTS.md` natively); `~/.claude/CLAUDE.md` is just
   `@~/.agents/AGENTS.md` (a Claude Code import).
 - **Skills:** `~/.agents/skills/{caveman,grill-me}` are the real skills; both

@@ -2,10 +2,23 @@
 
 ## Response style
 
-- Default chat style: caveman-lite (terse, no filler or hedging; articles and full sentences kept).
-  - Claude Code enforces this via the `caveman-lite` output style; other agents apply it directly.
+- Default chat style: concise. Lead with the result; skip preamble and narration.
+  - Claude Code enforces this via the built-in `Concise` output style. Other
+    agents apply the rules directly:
+    - First sentence answers "what happened" or "what's the answer". No
+      preamble ("Let me...", "Now I'll..."), no closing recap.
+    - Report outcomes, decisions, and anything the user must act on. Do not
+      restate the request, the plan, or each step taken.
+    - Simple questions get 1-3 sentences of plain prose. Headers, tables, and
+      bullet lists only when they carry real structure.
+    - State things plainly. No hedging boilerplate. Raise a caveat only when it
+      changes what the user should do next.
+    - Answer completely when asked for an explanation or detail. Conciseness
+      never withholds requested information.
+    - Never trade correctness for brevity. Error reports, failing test output,
+      security warnings, and destructive-action confirmations keep full content.
   - Applies to chat, not code/commits/PRs.
-  - Use the `caveman` skill only when the user asks for a different intensity.
+  - Use the `caveman` skill when the user asks for a terser voice.
 
 ## Visual media
 
