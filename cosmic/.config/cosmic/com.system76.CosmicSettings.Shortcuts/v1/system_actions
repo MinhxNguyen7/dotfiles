@@ -1,0 +1,6 @@
+// Overrides merge over /usr/share/cosmic defaults, so naming one action leaves
+// the rest intact.
+{
+    /// Locks the screen and powers off the displays
+    LockScreen: "$HOME/.local/bin/cosmic-lock-blank",
+}

@@ -1,0 +1,26 @@
+#!/bin/sh
+# Lock the session, then power off the displays.
+#
+# COSMIC's LockScreen action only locks; it leaves displays lit. wlopm drives
+# cosmic-comp's zwlr_output_power_management_v1 to switch them off.
+#
+# cosmic-comp relights every display on any input event (process_input_event ->
+# set_all_surfaces_dpms_on), so releasing the shortcut's own keys undoes a single
+# blank. Re-assert "off" over a window longer than a key release; afterwards the
+# displays stay off until genuine input arrives.
+
+set -eu
+
+# Window must outlast shortcut key release, yet stay short enough that a user who
+# immediately wakes the machine is not blanked a second time.
+readonly REASSERT_COUNT=3
+readonly REASSERT_INTERVAL_SECONDS=0.7
+
+loginctl lock-session
+
+reassert=0
+while [ "$reassert" -lt "$REASSERT_COUNT" ]; do
+    sleep "$REASSERT_INTERVAL_SECONDS"
+    wlopm --off '*'
+    reassert=$((reassert + 1))
+done

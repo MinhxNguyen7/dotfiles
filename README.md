@@ -14,7 +14,8 @@ dotfiles/
 ├── bash/    → ~/.bashrc, ~/.profile, ~/.bash_logout
 ├── git/     → ~/.gitconfig
 ├── claude/  → ~/.claude/{settings.json, statusline-command.sh, CLAUDE.md, skills→.agents}
-└── codex/   → ~/.codex/{config.toml, AGENTS.md→.agents, skills→.agents}
+├── codex/   → ~/.codex/{config.toml, AGENTS.md→.agents, skills→.agents}
+└── cosmic/  → ~/.config/cosmic/…, ~/.local/bin/cosmic-lock-blank
 ```
 
 **`~/.agents/` is the single source of truth** for shared agent instructions and
@@ -31,13 +32,35 @@ skills — a neutral location owned by no single tool. Each tool points into it:
 **Edit the files under `~/.agents/`** (repo: `agents/.agents/`) and every tool
 stays in sync. (Promoted from a per-project setup.)
 
+## COSMIC: blank the screen on lock
+
+COSMIC locks the session but leaves the displays lit. `cosmic/` overrides the
+`LockScreen` system action so the lock shortcut (`Super`+`Esc`) also powers the
+displays off via [`wlopm`](https://git.sr.ht/~leon_plickat/wlopm); any key or
+mouse movement wakes them back to the lock prompt.
+
+Overrides in `~/.config/cosmic/…/v1/system_actions` are merged over the defaults
+in `/usr/share/cosmic/`, so naming one action leaves the rest intact.
+
+`wlopm` is the only extra dependency — install it per machine (see below).
+
+> Two limitations, both inherent to cosmic-comp:
+>
+> - **Blanking cannot be its own shortcut.** While the session is locked,
+>   cosmic-comp runs only `Terminate`, `Debug`, input-source switch, brightness,
+>   volume, and mute; every other action, custom `Spawn` bindings included, is
+>   dropped (`src/input/actions.rs`). So locking and blanking must be one action.
+> - **The panel's power-menu "Lock Screen" does not blank.** It calls logind
+>   directly, bypassing `system_actions`. Covering every lock path would need a
+>   systemd user unit reacting to logind's `Lock` signal.
+
 ## Setup on a new machine
 
 ```bash
-sudo apt install -y stow                                      # or your package manager
+sudo apt install -y stow wlopm                                # or your package manager
 git clone https://github.com/MinhxNguyen7/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-stow agents bash git claude codex                             # symlink everything into ~
+stow agents bash git claude codex cosmic                      # symlink everything into ~
 ```
 
 > If a target file already exists (e.g. a stock `~/.bashrc`), stow will refuse
