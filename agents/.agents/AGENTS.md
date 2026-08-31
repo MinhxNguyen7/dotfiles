@@ -91,6 +91,16 @@
 - Append `!` after the type/scope (or add a `BREAKING CHANGE:` footer) for
   breaking changes.
 
+## Pull Requests
+
+- Keep PR descriptions short and concise: what the PR does, not what was done to build it.
+- Descriptions are stateless. Describe current end state and purpose, not process.
+  - Do not narrate steps taken: revisions, review rounds, commits, iterations.
+  - History belongs to commits, comments, and reviews, not the description.
+  - Bad: "Updated after review feedback to also handle the null case."
+  - Good: "Handles the null case."
+- When updating an existing PR description, rewrite it to reflect the current diff, don't append change logs.
+
 ## Subagents
 
 - Eagerly delegate to concurrent subagents for speed and to keep parent context focused.
