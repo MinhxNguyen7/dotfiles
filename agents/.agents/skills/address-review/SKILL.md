@@ -39,20 +39,29 @@ where parallel isn't supported.
 Each subagent reads the relevant code in context — not just the quoted diff — and
 returns a verdict:
 
-- **Confirmed** — real issue; report file:line and a concrete fix.
+- **Confirmed** — real issue; report file:line and a concrete fix. When the fix
+  admits materially different approaches (behavior, API, scope, or cost differ —
+  not style), report 2–4 options with trade-offs and a recommendation instead.
 - **Refuted** — wrong or already handled; report the evidence.
 - **Needs decision** — valid but a scope, design, or judgment call for the user.
 
 Never take a comment at face value. Drop refuted and speculative items from the fix list.
 
-## 3. Delegate the fixes — one subagent per fix
+## 3. Settle choices before fixing
+
+Before any fix dispatches, ask the user in one batch (recommended option first) about
+every multi-option and needs-decision item, so the fix loop runs unattended. Deferred
+items stay needs-decision; declined ones become refuted.
+
+## 4. Delegate the fixes — one subagent per fix
 
 Order confirmed fixes by dependency and file so commits stay clean, then dispatch one
 subagent per fix **sequentially**. They share a working tree: concurrent fixes race on
 edits and on the index, and interleaved commits stop being atomic.
 
 Give each subagent everything it needs to work without re-deriving your verification:
-the comment text and file:line, the verdict and the concrete fix, and instructions to
+the comment text and file:line, the verdict and the concrete fix (the user's chosen
+option where step 3 asked), and instructions to
 
 - apply the smallest change that addresses the comment, and nothing else;
 - verify it — run the relevant build/test/lint — and report the command and result;
@@ -64,11 +73,12 @@ Between dispatches, check what came back: inspect the commit, confirm verificati
 actually ran and passed, and confirm the scope stayed inside the comment. Re-dispatch
 with correction when a subagent overreached, left tests failing, or missed the point.
 A subagent that reports a fix is impossible or the comment was wrong on closer reading
-flips that item to refuted or needs-decision — don't force the fix through.
+flips that item to refuted or needs-decision — don't force the fix through. If it
+finds the chosen option unworkable, stop and ask rather than switch options silently.
 
-Keep unrelated cleanups out. Leave "needs decision" items uncommitted until the user rules.
+Keep unrelated cleanups out. Leave deferred items uncommitted.
 
-## 4. Delegate replies and resolution
+## 5. Delegate replies and resolution
 
 Push the commits so the SHAs are referenceable. Then fan out reply subagents **in
 parallel** — one per thread, independent, no shared state. Each gets the thread ID, the
@@ -83,7 +93,7 @@ Replying and resolving are outward-facing and public. Invoking this skill author
 them, but confirm first if authorization is unclear — and settle that before dispatching,
 not after a subagent has already posted.
 
-## 5. Report back
+## 6. Report back
 
 Aggregate the subagent returns and summarize: what was fixed (with SHAs), what you pushed
 back on and why, and what still needs the user's decision.
