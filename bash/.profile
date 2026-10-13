@@ -25,3 +25,8 @@ fi
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
+
+# COSMIC lock screen: direct scanout of the static lock surface drops the frame
+# callback cosmic-greeter needs to paint its next frame, so the clock freezes
+# until input forces a repaint. Compositing keeps callbacks flowing.
+export COSMIC_DISABLE_DIRECT_SCANOUT=1
