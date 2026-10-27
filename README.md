@@ -15,7 +15,8 @@ dotfiles/
 ├── git/     → ~/.gitconfig
 ├── claude/  → ~/.claude/{settings.json, statusline-command.sh, CLAUDE.md, skills→.agents}
 ├── codex/   → ~/.codex/{config.toml, AGENTS.md→.agents, skills→.agents}
-└── cosmic/  → ~/.config/cosmic/…, ~/.local/bin/cosmic-lock-blank
+├── cosmic/  → ~/.config/cosmic/…, ~/.local/bin/cosmic-lock-blank
+└── fcitx5/  → ~/.xinputrc, ~/.config/fcitx5/profile
 ```
 
 **`~/.agents/` is the single source of truth** for shared agent instructions and
@@ -54,13 +55,24 @@ in `/usr/share/cosmic/`, so naming one action leaves the rest intact.
 >   directly, bypassing `system_actions`. Covering every lock path would need a
 >   systemd user unit reacting to logind's `Lock` signal.
 
+## fcitx5: Vietnamese input
+
+`~/.xinputrc` selects fcitx5 through im-config, which exports the
+`*_IM_MODULE`/`XMODIFIERS` variables at login and autostarts fcitx5.
+`profile` holds two input methods, `keyboard-us` and `unikey` (Telex);
+`Ctrl`+`Space` toggles between them. Takes effect after re-login.
+
+Only `profile` is tracked. fcitx5 writes the rest of `~/.config/fcitx5/`
+itself, so stow it with `--no-folding` to keep that dir real and out of the repo.
+
 ## Setup on a new machine
 
 ```bash
-sudo apt install -y stow wlopm                                # or your package manager
+sudo apt install -y stow wlopm fcitx5 fcitx5-unikey           # or your package manager
 git clone https://github.com/MinhxNguyen7/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 stow agents bash git claude codex cosmic                      # symlink everything into ~
+stow --no-folding fcitx5
 ```
 
 > If a target file already exists (e.g. a stock `~/.bashrc`), stow will refuse
