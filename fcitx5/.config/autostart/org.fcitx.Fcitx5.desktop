@@ -1,0 +1,8 @@
+# im-launch autostart is no-op on COSMIC: systemd user env lacks IM_CONFIG_PHASE.
+[Desktop Entry]
+Type=Application
+Name=Fcitx 5
+Comment=Start Input Method
+Exec=fcitx5
+Icon=fcitx
+NoDisplay=true

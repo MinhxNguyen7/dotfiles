@@ -1,0 +1,4 @@
+# fcitx5 writes state and cache here. Track input method profile only.
+/*
+!/.gitignore
+!/profile

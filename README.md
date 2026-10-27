@@ -16,7 +16,7 @@ dotfiles/
 ├── claude/  → ~/.claude/{settings.json, statusline-command.sh, CLAUDE.md, skills→.agents}
 ├── codex/   → ~/.codex/{config.toml, AGENTS.md→.agents, skills→.agents}
 ├── cosmic/  → ~/.config/cosmic/…, ~/.local/bin/cosmic-lock-blank
-└── fcitx5/  → ~/.xinputrc, ~/.config/fcitx5/profile
+└── fcitx5/  → ~/.xinputrc, ~/.config/fcitx5/, ~/.config/autostart/org.fcitx.Fcitx5.desktop
 ```
 
 **`~/.agents/` is the single source of truth** for shared agent instructions and
@@ -58,12 +58,21 @@ in `/usr/share/cosmic/`, so naming one action leaves the rest intact.
 ## fcitx5: Vietnamese input
 
 `~/.xinputrc` selects fcitx5 through im-config, which exports the
-`*_IM_MODULE`/`XMODIFIERS` variables at login and autostarts fcitx5.
-`profile` holds two input methods, `keyboard-us` and `unikey` (Telex);
-`Ctrl`+`Space` toggles between them. Takes effect after re-login.
+`*_IM_MODULE`/`XMODIFIERS` variables at login. `profile` holds two input
+methods, `keyboard-us` and `unikey` (Telex); `Ctrl`+`Space` toggles between
+them. Takes effect after re-login.
 
-Only `profile` is tracked. fcitx5 writes the rest of `~/.config/fcitx5/`
-itself, so stow it with `--no-folding` to keep that dir real and out of the repo.
+- **Autostart:** im-config's own `im-launch` autostart does nothing on COSMIC
+  (autostart runs as systemd units, whose environment lacks `IM_CONFIG_PHASE`),
+  so `org.fcitx.Fcitx5.desktop` starts fcitx5 instead.
+- **Folded config dir:** fcitx5 saves `profile` by atomic rename, which would
+  replace a per-file symlink. `~/.config/fcitx5` is therefore a symlink to the
+  whole package dir, and its `.gitignore` keeps everything but `profile` (state,
+  caches) out of git. Create `~/.config/autostart` before stowing so that dir
+  stays real instead of folding too.
+- **Requires COSMIC 1.11+** (`cosmic-comp` ≥ `8cb1802`). Earlier builds drop all
+  keys in native Wayland apps while fcitx5 runs
+  ([cosmic-comp#2941](https://github.com/pop-os/cosmic-comp/issues/2941)).
 
 ## Setup on a new machine
 
@@ -72,7 +81,7 @@ sudo apt install -y stow wlopm fcitx5 fcitx5-unikey           # or your package 
 git clone https://github.com/MinhxNguyen7/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 stow agents bash git claude codex cosmic                      # symlink everything into ~
-stow --no-folding fcitx5
+mkdir -p ~/.config/autostart && stow fcitx5
 ```
 
 > If a target file already exists (e.g. a stock `~/.bashrc`), stow will refuse
