@@ -32,6 +32,17 @@
 
 ## Coding
 
+### Reuse
+
+- Search before adding a function, class, or module. Search by behavior, not just name.
+- Reuse in order: use as-is, extend, lift to a shared location, write new.
+  - Extend only for the same concept. Don't merge look-alikes behind flags.
+- Prefer in-house code (repo or company packages) over libraries.
+  - Exception: buggy or deprecated in-house code.
+  - In-house lacks a capability: extend it, don't route around it.
+  - Nothing in-house: use a maintained library, don't hand-roll.
+- Report duplication in code the change touches. Ignore unrelated duplication.
+
 ### Program Flow
 
 - Do not work around problems by editing `PYTHONPATH` or other environment
