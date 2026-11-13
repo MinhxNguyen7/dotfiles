@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# gh account scoped to ~/minh on shared machines: inside ~/minh, use the gh
+# config in ~/minh/.config/gh when it exists. Elsewhere, defer to gh defaults.
+# Explicit GH_CONFIG_DIR wins.
+set -euo pipefail
+
+this_script="$(readlink -f "${BASH_SOURCE[0]}")"
+scoped_config_dir="$HOME/minh/.config/gh"
+
+real_gh=""
+IFS=: read -ra path_entries <<< "$PATH"
+for path_entry in "${path_entries[@]}"; do
+    candidate="$path_entry/gh"
+    if [ -x "$candidate" ] && [ "$(readlink -f "$candidate")" != "$this_script" ]; then
+        real_gh="$candidate"
+        break
+    fi
+done
+if [ -z "$real_gh" ]; then
+    echo "gh wrapper: no gh executable found on PATH" >&2
+    exit 127
+fi
+
+case "$PWD/" in
+    "$HOME/minh/"*)
+        if [ -z "${GH_CONFIG_DIR:-}" ] && [ -d "$scoped_config_dir" ]; then
+            export GH_CONFIG_DIR="$scoped_config_dir"
+        fi
+        ;;
+esac
+
+exec "$real_gh" "$@"

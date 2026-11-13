@@ -16,7 +16,8 @@ dir is a stow **package** mirroring `$HOME`. Real files live in the repo; stow
 symlinks them into `~`.
 
 Packages: `agents` (→ `~/.agents`), `bash` (→ `~/.bashrc`/`.profile`/`.bash_logout`),
-`git` (→ `~/.gitconfig`), `claude` (→ `~/.claude`), `codex` (→ `~/.codex`).
+`git` (→ `~/.gitconfig`, `~/.gitconfig-minh`), `bin` (→ `~/.local/bin/gh`, scoped gh wrapper),
+`claude` (→ `~/.claude`), `codex` (→ `~/.codex`).
 
 `~/.agents/` is the **single source of truth** for shared agent instructions and
 skills. Each tool points into it: `~/.codex/AGENTS.md` symlinks to
@@ -37,7 +38,7 @@ them, wired differently:
 cd ~/dotfiles
 git status                 # if dirty → do "Commit back" first, or `git stash`
 git pull --ff-only
-stow -R agents bash git claude codex   # idempotent; relinks any added/removed files
+stow -R agents bash bin git claude codex   # idempotent; relinks any added/removed files
 ```
 
 `~/.claude/skills` is a single symlink → the shared skills dir, so skills pulled

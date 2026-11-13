@@ -169,18 +169,3 @@ if [ -x "$HOME/.pixi/bin/pixi" ]; then
 export PATH="$HOME/.pixi/bin:$PATH"
 eval "$(pixi completion --shell bash)"
 fi
-
-# --- gh account scoped to ~/minh (shared machines) ---
-# Active only where ~/minh/.config/gh exists; elsewhere gh uses its default config.
-gh() {
-    local scoped_config_dir="$HOME/minh/.config/gh"
-    case "$PWD/" in
-        "$HOME/minh/"*)
-            if [ -d "$scoped_config_dir" ]; then
-                GH_CONFIG_DIR="$scoped_config_dir" command gh "$@"
-                return
-            fi
-            ;;
-    esac
-    command gh "$@"
-}
