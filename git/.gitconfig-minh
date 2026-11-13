@@ -1,0 +1,12 @@
+# Personal GitHub identity + credentials. Included by ~/.gitconfig.local:
+# unconditionally on personal machines, via includeIf gitdir:~/minh/ on shared ones.
+# Shared machines keep the gh token in ~/minh/.config/gh instead of the global gh config.
+[user]
+	name = MinhxNguyen7
+	email = 64875104+MinhxNguyen7@users.noreply.github.com
+[credential "https://github.com"]
+	helper = 
+	helper = "!f() { scoped=$HOME/minh/.config/gh; [ -d $scoped ] && export GH_CONFIG_DIR=$scoped; gh auth git-credential \"$@\"; }; f"
+[credential "https://gist.github.com"]
+	helper = 
+	helper = "!f() { scoped=$HOME/minh/.config/gh; [ -d $scoped ] && export GH_CONFIG_DIR=$scoped; gh auth git-credential \"$@\"; }; f"
