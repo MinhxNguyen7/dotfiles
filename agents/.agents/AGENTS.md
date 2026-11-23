@@ -84,11 +84,18 @@
   behavior breaks, not when refactoring changes the code.
   - Avoid change-detection tests that merely assert the current implementation
     (e.g. snapshotting internal state or mirroring the code under test).
-- Be strategic to limit execution time and maintenance cost.
-  - Cover the meaningful cases (core paths, edge cases, regressions); skip
-    redundant or low-value tests.
-  - Prefer fast, focused tests; reserve slow/integration tests for behavior unit
-    tests cannot reach.
+- Write the fewest tests that protect the behavior. Each test must catch a bug
+  no other test catches.
+  - Default: one test for the core path, one per distinct failure mode or fixed
+    regression. Nothing for trivial code (accessors, pass-through wrappers) or
+    third-party behavior.
+  - Extend or parametrize an existing test before adding a new one.
+- Build test inputs inline. Add a fixture only when several tests share
+  nontrivial setup; no fixture chains, no `autouse`, no checked-in data files
+  when a few lines construct the input.
+- Keep tests fast: smallest inputs that exercise the behavior, no sleeps,
+  network, or model loading. Reserve slow/integration tests for behavior unit
+  tests cannot reach.
 
 ## Commits
 
